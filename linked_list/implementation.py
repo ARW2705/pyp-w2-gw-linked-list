@@ -1,7 +1,7 @@
 from .interface import AbstractLinkedList
 from .node import Node
 
-
+'''
 class LinkedListIterator(object):
     def __init__(self, start, end):
         self.start = start
@@ -19,6 +19,7 @@ class LinkedListIterator(object):
 
         
     next = __next__
+'''
 
 class LinkedList(AbstractLinkedList):
     """
@@ -40,7 +41,12 @@ class LinkedList(AbstractLinkedList):
         return self.count()
 
     def __iter__(self):
-        return LinkedListIterator(self.start, self.end)
+        #return LinkedListIterator(self.start, self.end)
+        current_node = self.start
+        while current_node:
+            yield current_node.elem
+            current_node = current_node.next
+        raise StopIteration
 
     def __getitem__(self, index):
         if not self:
@@ -86,39 +92,27 @@ class LinkedList(AbstractLinkedList):
         for i in self:
             count += 1
         return count
-
+        
     def pop(self, index=None):
         current_node = self.start
         previous_node = None
         count = 0
-        try:
-            if index >= self.count() or self.count() == 0:
-                raise IndexError
-        except TypeError:
-            if self.count() == 0:
-                raise IndexError
+        if not self.count():
+            raise IndexError
+        if index is None:
+            index = len(self) - 1
+        if index >= self.count():
+            raise IndexError
         while current_node:
-            if index is None:
-                if current_node.next is None:
-                    if previous_node is None:
-                        self.start = None
-                        return current_node.elem
-                    previous_node.next = None
-                    return current_node.elem
-                else:
-                    previous_node = current_node
-                    current_node = current_node.next
-            else:
-                if count == index:
-                    if index == 0:
-                        previous_node = current_node
-                        self.start = current_node.next
-                        return previous_node
-                    else:
-                        previous_node.next = current_node.next
-                        return current_node
-                else:
-                    count += 1
-                    previous_node = current_node
-                    current_node = current_node.next
+            if index == 0:
+                previous_node = current_node
+                self.start = current_node.next
+                return previous_node
+            if count == index:
+                previous_node.next = current_node.next
+                return current_node
+            count += 1
+            previous_node = current_node
+            current_node = current_node.next
+
     repr = __repr__
