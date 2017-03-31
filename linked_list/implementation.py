@@ -49,20 +49,17 @@ class LinkedList(AbstractLinkedList):
         raise StopIteration
 
     def __getitem__(self, index):
-        if not self:
+        if not self or index > len(self):
             raise IndexError
-        if index > len(self):
-            raise IndexError
-        index_count = 0
-        for elem in self:
+        for index_count, elem in enumerate(self):
             if index_count == index:
                 return elem
-            index_count += 1
 
     def __add__(self, other):
-        for elem in other:
-            self.append(elem)
-        return self
+        new_list = self.__class__([elem for elem in self])
+        for element in other:
+            new_list.append(element)
+        return new_list
 
     def __iadd__(self, other):
         for elem in other:
