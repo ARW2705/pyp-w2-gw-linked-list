@@ -117,3 +117,4 @@ class LinkedList(AbstractLinkedList):
                     count += 1
                     previous_node = current_node
                     current_node = current_node.next
+    repr = __repr__
