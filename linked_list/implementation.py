@@ -91,8 +91,11 @@ class LinkedList(AbstractLinkedList):
         current_node = self.start
         previous_node = None
         count = 0
-        if index >= self.count() or self.count() == 0:
-            raise IndexError
+        try:
+            if index >= self.count() or self.count() == 0:
+                raise IndexError
+        except TypeError:
+            pass
         while current_node:
             if index is None:
                 if current_node.next is None:
