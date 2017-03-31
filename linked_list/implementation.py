@@ -95,7 +95,8 @@ class LinkedList(AbstractLinkedList):
             if index >= self.count() or self.count() == 0:
                 raise IndexError
         except TypeError:
-            pass
+            if self.count() == 0:
+                raise IndexError
         while current_node:
             if index is None:
                 if current_node.next is None:
